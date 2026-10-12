@@ -27,6 +27,8 @@ La suite comprueba:
 - Consulta, creación, actualización de averías y borrado de vehículos.
 - Confirmación antes de borrar y conservación de los datos cuando falla el servidor.
 - Cabecera de usuario autenticado y estructura principal de la aplicación.
+- Límite de cuatro vehículos y redirección a Premium al intentar añadir el quinto.
+- Checkout de Stripe, cancelación, errores y activación solo después de confirmar el pago.
 
 Cada archivo `*.spec.ts` está junto al servicio o componente que comprueba.
 Los datos y utilidades comunes están en `src/app/testing/test-helpers.ts`.

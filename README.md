@@ -1,5 +1,9 @@
 # DiagAutoFrontend
 
+## Premium con Stripe
+
+El quinto vehículo requiere Premium: pago único de 99,99 EUR mediante Stripe Checkout, en modo de pruebas. Configura las claves únicamente en el backend siguiendo [la guía de Stripe](../diagAuto-backend/STRIPE.md). El frontend solo actualiza el plan cuando el backend confirma el pago.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.26.
 
 ## Development server

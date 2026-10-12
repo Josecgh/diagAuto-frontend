@@ -40,6 +40,10 @@ export class VehicleCreate {
       next: () => { void this.router.navigateByUrl('/vehicles'); },
       error: (error: HttpErrorResponse) => {
         this.submitting.set(false);
+        if (error.status === 409) {
+          void this.router.navigateByUrl('/premium');
+          return;
+        }
         this.error.set(error.status === 401 || error.status === 403
           ? 'Tu sesión ha caducado. Vuelve a iniciar sesión para guardar el vehículo.'
           : error.status === 0

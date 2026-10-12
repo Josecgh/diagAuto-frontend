@@ -22,6 +22,7 @@
           <div class="profile-menu">
             <strong>{{ user.name }} {{ user.lastName }}</strong>
             <span>{{ user.email }}</span>
+            <span>Plan {{ user.accountStatus === 'PREMIUM' ? 'Premium' : 'gratuito' }}</span>
             <a class="vehicles-link" routerLink="/vehicles" (click)="closeProfileMenu()"
               >Mis vehículos</a
             >

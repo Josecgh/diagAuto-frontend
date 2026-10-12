@@ -1,0 +1,24 @@
+<main class="premium-page">
+  <section class="premium-card">
+    <a routerLink="/vehicles">← Volver a mis vehículos</a>
+    <p class="eyebrow">DIAGAUTO PREMIUM</p>
+    <h1>Más espacio para tus vehículos</h1>
+    @if (service.currentUser()?.accountStatus === 'PREMIUM') {
+      <p>Tu cuenta ya tiene Premium. Puedes añadir más de cuatro vehículos.</p>
+      <a class="primary-action" routerLink="/vehicles/new">Añadir vehículo</a>
+    } @else {
+      <p>El plan gratuito incluye hasta <strong>4 vehículos</strong>. Para añadir el quinto y los siguientes, activa Premium.</p>
+      <div class="plan-feature">✓ Vehículos sin el límite del plan gratuito</div>
+      <div class="plan-feature">✓ Gestión de datos, averías y revisiones</div>
+      <h2>99,99 € <small>Pago único</small></h2>
+      <p class="payment-note">Stripe en modo de pruebas: no se realizan cargos reales.</p>
+      @if (sessionId) {
+        <button type="button" (click)="confirm()" [disabled]="submitting()">{{ submitting() ? 'Comprobando...' : 'Comprobar pago' }}</button>
+      } @else {
+        <button type="button" (click)="checkout()" [disabled]="submitting()">{{ submitting() ? 'Abriendo Stripe...' : 'Pagar 99,99 € con Stripe' }}</button>
+      }
+    }
+    @if (message()) { <p role="status">{{ message() }}</p> }
+    @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+  </section>
+</main>

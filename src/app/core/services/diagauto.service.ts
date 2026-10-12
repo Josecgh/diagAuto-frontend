@@ -111,6 +111,18 @@ export class DiagautoService {
     return this.http.post<User>(`${this.apiUrl}/users`, user);
   }
 
+  createPremiumCheckout(): Observable<{ url: string }> {
+    return this.http.post<{ url: string }>(`${this.apiUrl}/billing/checkout`, {}, this.requestOptions);
+  }
+
+  confirmPremiumPayment(sessionId: string): Observable<{ paid: boolean; user: User | null }> {
+    return this.http.post<{ paid: boolean; user: User | null }>(
+      `${this.apiUrl}/billing/checkout/${encodeURIComponent(sessionId)}/confirm`, {}, this.requestOptions
+    ).pipe(
+      tap((result) => { if (result.paid && result.user) this.userState.set(result.user); })
+    );
+  }
+
   getUser(id: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/users/${id}`, this.requestOptions);
   }
