@@ -65,10 +65,10 @@ export class VehicleList {
     const labels: Record<VehicleType, string> = {
       CAR: 'Coche',
       MOTORCYCLE: 'Motocicleta',
-      TRUCK: 'Cami\u00f3n',
+      TRUCK: 'Camión',
       VAN: 'Furgoneta',
       BICYCLE: 'Bicicleta',
-      BUS: 'Autob\u00fas'
+      BUS: 'Autobús'
     };
     return labels[type];
   }
