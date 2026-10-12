@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, of, throwError, tap } from 'rxjs';
 import { environment } from '../../../environments/environmet';
 
 export type VehicleType = 'CAR' | 'MOTORCYCLE' | 'TRUCK' | 'VAN' | 'BICYCLE' | 'BUS';
@@ -28,6 +28,11 @@ export interface UserRegistration {
   lastName: string;
 }
 
+export interface Credentials {
+  email: string;
+  password: string;
+}
+
 export type AccountStatus = 'FREE' | 'PREMIUM';
 export interface User {
   id: number;
@@ -42,6 +47,65 @@ export class DiagautoService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.apiBaseUrl;
   private readonly requestOptions = { withCredentials: true };
+  private readonly userState = signal<User | null>(null);
+  private readonly sessionReadyState = signal(false);
+  readonly currentUser = this.userState.asReadonly();
+  readonly sessionReady = this.sessionReadyState.asReadonly();
+
+  login(credentials: Credentials): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/auth/login`, credentials, this.requestOptions).pipe(
+      tap((user) => {
+        this.userState.set(user);
+        this.sessionReadyState.set(true);
+      })
+    );
+  }
+
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/auth/logout`, {}, this.requestOptions).pipe(
+      tap(() => this.clearSession()),
+      catchError((error: unknown) => {
+        this.clearSession();
+        return throwError(() => error);
+      })
+    );
+  }
+
+  restoreSession(): void {
+    this.http.get<User>(`${this.apiUrl}/auth/me`, this.requestOptions).subscribe({
+      next: (user) => {
+        this.userState.set(user);
+        this.sessionReadyState.set(true);
+      },
+      error: () => {
+        this.userState.set(null);
+        this.sessionReadyState.set(true);
+      }
+    });
+  }
+
+  checkSession(): Observable<boolean> {
+    if (this.sessionReadyState()) {
+      return of(this.userState() !== null);
+    }
+
+    return this.http.get<User>(`${this.apiUrl}/auth/me`, this.requestOptions).pipe(
+      tap((user) => {
+        this.userState.set(user);
+        this.sessionReadyState.set(true);
+      }),
+      map(() => true),
+      catchError(() => {
+        this.clearSession();
+        return of(false);
+      })
+    );
+  }
+
+  private clearSession(): void {
+    this.userState.set(null);
+    this.sessionReadyState.set(true);
+  }
 
   registerUser(user: UserRegistration): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/users`, user);
