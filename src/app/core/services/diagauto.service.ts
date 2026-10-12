@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environmet';
 
-export type VehicleType = 'CAR' | 'MOTORCYCLE' | 'TRUCK' | 'VAN';
+export type VehicleType = 'CAR' | 'MOTORCYCLE' | 'TRUCK' | 'VAN' | 'BICYCLE' | 'BUS';
 
 export interface VehicleRequest {
   vehicleType: VehicleType;
@@ -28,12 +28,13 @@ export interface UserRegistration {
   lastName: string;
 }
 
+export type AccountStatus = 'FREE' | 'PREMIUM';
 export interface User {
   id: number;
   email: string;
   name: string;
   lastName: string;
-  accountStatus: string;
+  accountStatus: AccountStatus;
 }
 
 @Injectable({ providedIn: 'root' })
