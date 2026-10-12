@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-body',
   imports: [],
   templateUrl: './body.html',
-  styleUrl: './body.css',
+  styleUrl: './body.scss',
 })
 export class Body {}

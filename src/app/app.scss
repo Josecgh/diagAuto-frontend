@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+router-outlet + * {
+  flex: 1;
+}
