@@ -5,7 +5,7 @@
     <h1 id="register-title">Crea tu cuenta</h1>
     <p class="intro">Reg&iacute;strate para tener tus veh&iacute;culos bajo control.</p>
 
-    <form (ngSubmit)="submit()" #registerForm="ngForm">
+    <form (ngSubmit)="submit(registerForm)" #registerForm="ngForm">
       <label for="name">Nombre</label>
       <input id="name" name="name" [(ngModel)]="user.name" autocomplete="given-name" required>
 

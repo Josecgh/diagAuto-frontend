@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, type NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DiagautoService, type UserRegistration } from '../../core/services/diagauto.service';
 
@@ -18,7 +18,8 @@ export class Register {
   protected readonly successful = signal(false);
   protected readonly submitting = signal(false);
 
-  submit(): void {
+  submit(form: NgForm): void {
+    if (form.invalid || this.submitting()) return;
     this.message.set('');
     this.successful.set(false);
     this.submitting.set(true);
