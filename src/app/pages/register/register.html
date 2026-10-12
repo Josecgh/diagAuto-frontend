@@ -1,0 +1,31 @@
+<main class="auth-page">
+  <section class="auth-card" aria-labelledby="register-title">
+    <a class="back-link" routerLink="/">&larr; Volver al inicio</a>
+    <p class="eyebrow">EMPIEZA CON DIAGAUTO</p>
+    <h1 id="register-title">Crea tu cuenta</h1>
+    <p class="intro">Reg&iacute;strate para tener tus veh&iacute;culos bajo control.</p>
+
+    <form (ngSubmit)="submit(registerForm)" #registerForm="ngForm">
+      <label for="name">Nombre</label>
+      <input id="name" name="name" [(ngModel)]="user.name" autocomplete="given-name" required>
+
+      <label for="lastName">Apellidos</label>
+      <input id="lastName" name="lastName" [(ngModel)]="user.lastName" autocomplete="family-name" required>
+
+      <label for="email">Correo electr&oacute;nico</label>
+      <input id="email" name="email" type="email" [(ngModel)]="user.email" autocomplete="email" required email>
+
+      <label for="password">Contrase&ntilde;a</label>
+      <input id="password" name="password" type="password" [(ngModel)]="user.password" autocomplete="new-password" required minlength="8">
+
+      <button type="submit" [disabled]="registerForm.invalid || submitting()">
+        {{ submitting() ? 'Enviando...' : 'Crear cuenta' }}
+      </button>
+    </form>
+
+    @if (message()) {
+      <p class="feedback" [class.success]="successful()" role="status">{{ message() }}</p>
+    }
+    <p class="switch-page">&iquest;Ya tienes cuenta? <a routerLink="/login">Inicia sesi&oacute;n</a></p>
+  </section>
+</main>

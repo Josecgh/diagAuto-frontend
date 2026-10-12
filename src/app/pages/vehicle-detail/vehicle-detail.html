@@ -1,0 +1,114 @@
+<main class="create-page">
+  <div class="page-heading">
+    <a routerLink="/vehicles">← Volver a mis vehículos</a>
+    <h1>Estado del vehículo</h1>
+    <p>Consulta sus datos y actualiza las averías, los kilómetros y la fecha de ITV.</p>
+  </div>
+  @if (loading()) {
+    <p class="loading-message" role="status">Cargando vehículo...</p>
+  } @else if (!loaded()) {
+    <p class="error" role="alert">{{ error() }}</p>
+    <button class="retry-button" type="button" (click)="loadVehicle()">Reintentar</button>
+  } @else {
+    <div class="saved-status" [class.has-fault]="savedHasFault()">
+      Estado guardado: {{ savedHasFault() ? 'Con avería' : 'Sin averías registradas' }}
+    </div>
+    <form class="vehicle-form" #vehicleForm="ngForm" (ngSubmit)="submit(vehicleForm)">
+      <fieldset [disabled]="submitting()">
+        <legend>Datos del vehículo</legend>
+        <div class="fields-grid">
+          <div class="field">
+            <label for="vehicleType">Tipo de vehículo</label>
+            <select id="vehicleType" name="vehicleType" [(ngModel)]="vehicle.vehicleType" required>
+              <option value="CAR">Coche</option>
+              <option value="MOTORCYCLE">Motocicleta</option>
+              <option value="TRUCK">Camión</option>
+              <option value="VAN">Furgoneta</option>
+              <option value="BICYCLE">Bicicleta</option>
+              <option value="BUS">Autobús</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="plate">Matrícula</label>
+            <input
+              id="plate"
+              name="plate"
+              [(ngModel)]="vehicle.plate"
+              required
+              placeholder="1234 ABC"
+            />
+          </div>
+          <div class="field">
+            <label for="brand">Marca</label>
+            <input
+              id="brand"
+              name="brand"
+              [(ngModel)]="vehicle.brand"
+              required
+              placeholder="Ej. Toyota"
+            />
+          </div>
+          <div class="field">
+            <label for="model">Modelo</label>
+            <input
+              id="model"
+              name="model"
+              [(ngModel)]="vehicle.model"
+              required
+              placeholder="Ej. Corolla"
+            />
+          </div>
+          <div class="field">
+            <label for="kilometres">Kilómetros</label>
+            <input
+              id="kilometres"
+              name="kilometres"
+              type="number"
+              [(ngModel)]="vehicle.kilometres"
+              required
+              min="0"
+              step="1"
+            />
+          </div>
+          <div class="field">
+            <label for="inspection">Fecha de ITV <span>(opcional)</span></label>
+            <input
+              id="inspection"
+              name="technicalInspectionDate"
+              type="date"
+              [(ngModel)]="vehicle.technicalInspectionDate"
+            />
+          </div>
+        </div>
+        <label class="fault-toggle"
+          ><input name="hasFault" type="checkbox" [(ngModel)]="vehicle.hasFault" /> El vehículo
+          tiene alguna avería</label
+        >
+        @if (vehicle.hasFault) {
+          <div class="field">
+            <label for="faultDescription">Descripción de la avería <span>(opcional)</span></label>
+            <textarea
+              id="faultDescription"
+              name="faultDescription"
+              [(ngModel)]="vehicle.faultDescription"
+              rows="3"
+              placeholder="Describe qué le ocurre al vehículo"
+            ></textarea>
+          </div>
+        }
+      </fieldset>
+      @if (success()) {
+        <p class="success" role="status">{{ success() }}</p>
+      }
+      @if (error()) {
+        <p class="error" role="alert">{{ error() }}</p>
+      }
+      <div class="form-actions">
+        <a routerLink="/vehicles">Volver a la tabla</a>
+        <button type="submit" [disabled]="vehicleForm.invalid || submitting()">
+          {{ submitting() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+  }
+</main>

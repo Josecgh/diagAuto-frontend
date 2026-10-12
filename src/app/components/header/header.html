@@ -1,0 +1,40 @@
+<header class="site-header">
+  <a class="brand" routerLink="/home" aria-label="DiagAuto, inicio">
+    <span class="brand-mark" aria-hidden="true">D</span>
+    <span>diag<span class="brand-accent">auto</span></span>
+  </a>
+  @if (diagauto.sessionReady()) {
+    @if (diagauto.currentUser(); as user) {
+      <div class="profile-area">
+        <button
+          class="profile-button"
+          type="button"
+          (click)="toggleProfileMenu()"
+          [attr.aria-expanded]="profileMenuOpen()"
+          aria-label="Abrir perfil"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5 20c.4-3.5 3.2-5.5 7-5.5s6.6 2 7 5.5"></path>
+          </svg>
+        </button>
+        @if (profileMenuOpen()) {
+          <div class="profile-menu">
+            <strong>{{ user.name }} {{ user.lastName }}</strong>
+            <span>{{ user.email }}</span>
+            <span>Plan {{ user.accountStatus === 'PREMIUM' ? 'Premium' : 'gratuito' }}</span>
+            <a class="vehicles-link" routerLink="/vehicles" (click)="closeProfileMenu()"
+              >Mis vehículos</a
+            >
+            <button type="button" (click)="logout()">Cerrar sesión</button>
+          </div>
+        }
+      </div>
+    } @else {
+      <nav aria-label="Navegación principal">
+        <a routerLink="/login">Iniciar sesión</a>
+        <a class="register-link" routerLink="/register">Registrarse</a>
+      </nav>
+    }
+  }
+</header>

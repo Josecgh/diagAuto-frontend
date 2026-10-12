@@ -1,0 +1,104 @@
+<main class="garage-page">
+  <section class="garage-heading">
+    <div>
+      <p class="eyebrow">TU ESPACIO DIAGAUTO</p>
+      <h1>Mis vehículos</h1>
+      <p class="garage-intro">Consulta los datos, las revisiones y el estado de tus vehículos.</p>
+    </div>
+    <div class="heading-actions">
+      <button class="refresh-button" type="button" (click)="loadVehicles()" [disabled]="loading() || deletingId() !== null">
+        <span aria-hidden="true">↻</span> Actualizar
+      </button>
+      <a class="add-button" routerLink="/vehicles/new"><span aria-hidden="true">+</span> Añadir vehículo</a>
+    </div>
+  </section>
+
+  @if (deleteError()) { <p class="delete-feedback delete-error" role="alert">{{ deleteError() }}</p> }
+  @if (deleteSuccess()) { <p class="delete-feedback delete-success" role="status">{{ deleteSuccess() }}</p> }
+  <section class="vehicle-panel" aria-labelledby="vehicles-title">
+    <div class="panel-heading">
+      <div>
+        <h2 id="vehicles-title">Todos tus vehículos</h2>
+        <p>El estado actual de los vehículos asociados a tu cuenta.</p>
+      </div>
+      @if (!loading() && !error()) {
+        <span class="vehicle-count"
+          >{{ vehicles().length }}
+          {{ vehicles().length === 1 ? 'vehículo' : 'vehículos' }}</span
+        >
+      }
+    </div>
+
+    @if (loading()) {
+      <div class="table-message" role="status">
+        <span class="loader"></span> Cargando tus vehículos...
+      </div>
+    } @else if (error()) {
+      <div class="table-message error-message" role="alert">
+        <p>{{ error() }}</p>
+        <button class="retry-button" type="button" (click)="loadVehicles()">Reintentar</button>
+      </div>
+    } @else if (vehicles().length === 0) {
+      <div class="empty-state">
+        <span class="empty-icon" aria-hidden="true">🚗</span>
+        <h3>Aún no tienes vehículos</h3>
+        <p>
+          Cuando añadas un vehículo, aparecerá aquí con sus datos y
+          revisiones.
+        </p>
+      </div>
+    } @else {
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Vehículo</th>
+              <th scope="col">Matrícula</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Kilómetros</th>
+              <th scope="col">Próxima ITV</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (vehicle of vehicles(); track vehicle.id) {
+              <tr>
+                <td>
+                  <div class="vehicle-name">{{ vehicle.brand }} {{ vehicle.model }}</div>
+                  <div class="vehicle-id">Vehículo #{{ vehicle.id }}</div>
+                </td>
+                <td>
+                  <span class="plate">{{ vehicle.plate }}</span>
+                </td>
+                <td>{{ vehicleTypeLabel(vehicle.vehicleType) }}</td>
+                <td>{{ vehicle.kilometres | number }} km</td>
+                <td>
+                  {{
+                    vehicle.technicalInspectionDate
+                      ? (vehicle.technicalInspectionDate | date: 'dd/MM/yyyy')
+                      : 'Sin fecha'
+                  }}
+                </td>
+                <td>
+                  <span class="status-pill" [class.needs-attention]="vehicle.hasFault">
+                    <span class="status-indicator"></span>
+                    {{ vehicle.hasFault ? 'Con avería' : 'En buen estado' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="row-actions">
+                    <a class="detail-link" [routerLink]="['/vehicles', vehicle.id]">Ver y actualizar →</a>
+                    <button class="delete-button" type="button" (click)="deleteVehicle(vehicle)" [disabled]="deletingId() !== null" [attr.aria-label]="'Eliminar vehículo ' + vehicle.plate">
+                      {{ deletingId() === vehicle.id ? 'Eliminando...' : 'Eliminar' }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</main>
