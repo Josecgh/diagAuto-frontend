@@ -6,13 +6,15 @@
       <p class="garage-intro">Consulta los datos, las revisiones y el estado de tus vehículos.</p>
     </div>
     <div class="heading-actions">
-      <button class="refresh-button" type="button" (click)="loadVehicles()" [disabled]="loading()">
+      <button class="refresh-button" type="button" (click)="loadVehicles()" [disabled]="loading() || deletingId() !== null">
         <span aria-hidden="true">↻</span> Actualizar
       </button>
       <a class="add-button" routerLink="/vehicles/new"><span aria-hidden="true">+</span> Añadir vehículo</a>
     </div>
   </section>
 
+  @if (deleteError()) { <p class="delete-feedback delete-error" role="alert">{{ deleteError() }}</p> }
+  @if (deleteSuccess()) { <p class="delete-feedback delete-success" role="status">{{ deleteSuccess() }}</p> }
   <section class="vehicle-panel" aria-labelledby="vehicles-title">
     <div class="panel-heading">
       <div>
@@ -56,7 +58,7 @@
               <th scope="col">Kilómetros</th>
               <th scope="col">Próxima ITV</th>
               <th scope="col">Estado</th>
-              <th scope="col">Detalles</th>
+              <th scope="col">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -84,7 +86,14 @@
                     {{ vehicle.hasFault ? 'Con avería' : 'En buen estado' }}
                   </span>
                 </td>
-                <td><a class="detail-link" [routerLink]="['/vehicles', vehicle.id]">Ver y actualizar →</a></td>
+                <td>
+                  <div class="row-actions">
+                    <a class="detail-link" [routerLink]="['/vehicles', vehicle.id]">Ver y actualizar →</a>
+                    <button class="delete-button" type="button" (click)="deleteVehicle(vehicle)" [disabled]="deletingId() !== null" [attr.aria-label]="'Eliminar vehículo ' + vehicle.plate">
+                      {{ deletingId() === vehicle.id ? 'Eliminando...' : 'Eliminar' }}
+                    </button>
+                  </div>
+                </td>
               </tr>
             }
           </tbody>
