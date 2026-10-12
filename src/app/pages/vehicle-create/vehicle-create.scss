@@ -1,0 +1,24 @@
+.create-page { background: var(--color-surface); min-height: calc(100vh - 150px); padding: 44px 20px 70px; }
+.page-heading, .vehicle-form { max-width: 780px; margin: 0 auto; }
+.page-heading > a { color: var(--color-primary); font-size: 13px; text-decoration: none; }
+h1 { color: var(--color-ink); font-size: 34px; letter-spacing: -1px; margin: 22px 0 8px; }
+.page-heading p { color: var(--color-muted); font-size: 14px; margin: 0 0 26px; }
+.vehicle-form { background: white; border: 1px solid var(--color-border); border-radius: var(--radius-card); padding: 28px; box-shadow: 0 12px 35px #183b2e08; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+legend { color: var(--color-ink); font-size: 17px; font-weight: 700; margin-bottom: 24px; }
+.fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+label { color: var(--color-ink); font-size: 13px; font-weight: 600; }
+label span { color: var(--color-muted); font-weight: 400; }
+input:not([type='checkbox']), select, textarea { background: white; border: 1px solid var(--color-border); border-radius: 7px; color: var(--color-ink); font: inherit; font-size: 14px; padding: 11px 12px; width: 100%; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+textarea { resize: vertical; }
+.fault-toggle { display: flex; align-items: center; gap: 10px; margin: 25px 0 20px; }
+.fault-toggle input { accent-color: var(--color-primary); }
+.form-actions { display: flex; align-items: center; justify-content: flex-end; gap: 22px; margin-top: 28px; border-top: 1px solid var(--color-border); padding-top: 22px; }
+.form-actions a { color: var(--color-muted); font-size: 14px; text-decoration: none; }
+button { background: var(--color-primary); border: 0; border-radius: 7px; color: white; cursor: pointer; font: inherit; font-size: 14px; font-weight: 650; padding: 12px 18px; }
+button:hover { background: var(--color-primary-dark); }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.error { color: #a3453e; font-size: 13px; line-height: 1.6; margin-top: 20px; }
+@media (max-width: 560px) { .fields-grid { grid-template-columns: 1fr; gap: 18px; } .vehicle-form { padding: 22px; } h1 { font-size: 29px; } }
