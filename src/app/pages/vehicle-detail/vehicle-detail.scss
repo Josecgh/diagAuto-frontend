@@ -1,0 +1,6 @@
+@use '../vehicle-create/vehicle-create';
+.saved-status { display: inline-flex; align-items: center; gap: 7px; background: #edf7f0; border-radius: 20px; color: #397452; font-size: 12px; padding: 7px 12px; margin-bottom: 20px; }
+.saved-status.has-fault { background: #fff4e9; color: #a45f24; }
+.success { background: #edf7f0; color: #397452; border-radius: 7px; font-size: 13px; padding: 12px; margin-top: 20px; }
+.loading-message { color: var(--color-muted); padding: 30px 0; }
+.retry-button { margin-top: 15px; }
